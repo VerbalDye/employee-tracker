@@ -16,9 +16,6 @@
     "url": "https://github.com/VerbalDye/employee-tracker/issues"
   },
   "homepage": "https://github.com/VerbalDye/employee-tracker#readme",
-  "devDependencies": {
-    "jest": "^28.0.3"
-  },
   "dependencies": {
     "console.table": "^0.10.0",
     "inquirer": "^8.2.4",
