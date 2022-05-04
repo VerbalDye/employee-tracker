@@ -64,6 +64,20 @@ function addDepartment() {
 }
 
 function addRole() {
+    const options = []
+    const departments = []
+
+    db.query('SELECT * FROM department', (err, rows) => {
+        if (err) {
+            console.log(err);
+            return;
+        }
+        rows.forEach(row => {
+            options.push(row.name);
+            departments.push(row);
+        });
+    });
+
     inquirer.prompt([
         {
             type: 'text',
@@ -76,14 +90,22 @@ function addRole() {
             message: 'Please enter a salary for this role.'
         },
         {
-            type: 'number',
-            name: 'department_id',
-            message: 'Please enter a department for this role.'
+            type: 'list',
+            name: 'department',
+            message: 'Please select a department for this role.',
+            choices: options
         }
     ])
         .then((response) => {
+            let choice
+            departments.forEach(row => {
+                if (row.name === response.department) {
+                    choice = row.id;
+                }
+            });
+
             const sql = `INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)`;
-            const params = [response.title, response.salary, response.department_id];
+            const params = [response.title, response.salary, choice];
 
             db.query(sql, params, (err, result) => {
                 if (err) {
@@ -96,6 +118,20 @@ function addRole() {
 }
 
 function addEmployee() {
+    const roleOptions = []
+    const roles = []
+
+    db.query('SELECT id, title FROM role', (err, rows) => {
+        if (err) {
+            console.log(err);
+            return;
+        }
+        rows.forEach(row => {
+            roleOptions.push(row.title);
+            roles.push(row);
+        });
+    });
+
     inquirer.prompt([
         {
             type: 'text',
@@ -108,9 +144,10 @@ function addEmployee() {
             message: "Enter the employee's last name."
         },
         {
-            type: 'number',
-            name: 'role_id',
-            message: 'Please enter a role id for this employee.'
+            type: 'list',
+            name: 'role',
+            message: 'Please select a role id for this employee.',
+            choices: roleOptions
         },
         {
             type: 'number',
@@ -119,8 +156,42 @@ function addEmployee() {
         }
     ])
         .then((response) => {
+            let choice
+            roles.forEach(row => {
+                if (row.title === response.role) {
+                    choice = row.id;
+                }
+            });
+
             const sql = `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)`;
-            const params = [response.first_name, response.last_name, response.role_id, response.manager_id];
+            const params = [response.first_name, response.last_name, choice, response.manager_id];
+
+            db.query(sql, params, (err, result) => {
+                if (err) {
+                    console.log(err);
+                    return;
+                }
+                console.table(result);
+            });
+        });
+}
+
+function updateEmployee() {
+    inquirer.prompt([
+        {
+            type: 'number',
+            name: 'employee_id',
+            message: "Enter the employee's id that you want to update."
+        },
+        {
+            type: 'number',
+            name: 'role_id',
+            message: 'Please enter the new role id for this employee.'
+        }
+    ])
+        .then((response) => {
+            const sql = `UPDATE employee SET role_id = ? WHERE employee.id = ?`;
+            const params = [response.employee_id, response.role_id];
 
             db.query(sql, params, (err, result) => {
                 if (err) {
@@ -162,4 +233,4 @@ inquirer.prompt({
                 updateEmployee();
                 break;
         }
-    })
+    });
