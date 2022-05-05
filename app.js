@@ -28,7 +28,7 @@ function selectionLogic({ selection }) {
             return addEmployee();
         case 'Update Employee Role':
             return updateEmployeeRole();
-        case 'Update Employee Manger':
+        case 'Update Employee Manager':
             return updateEmployeeManager();
         case 'Exit':
             process.exit(1);
