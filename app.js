@@ -4,45 +4,48 @@ const { getRoles, addRole } = require('./lib/roles');
 const { getEmployees, addEmployee, updateEmployeeRole, updateEmployeeManager } = require('./lib/employees')
 
 function functionSelection() {
-    inquirer.prompt({
+    return inquirer.prompt({
         type: 'list',
         name: 'selection',
         message: 'What would you like to do?',
         choices: ['View All Departments', 'View All Roles', 'View All Employees', 'Add a Department', 'Add a Role', 'Add an Employee', 'Update Employee Role', 'Update Employee Manager', 'Exit']
     })
-        .then(({ selection }) => {
-            switch (selection) {
-                case 'View All Departments':
-                    getDepartments();
-                    break;
-                case 'View All Roles':
-                    getRoles();
-                    break;
-                case 'View All Employees':
-                    getEmployees();
-                    break;
-                case 'Add a Department':
-                    addDepartment();
-                    break;
-                case 'Add a Role':
-                    addRole();
-                    break;
-                case 'Add an Employee':
-                    addEmployee();
-                    break;
-                case 'Update Employee Role':
-                    updateEmployeeRole();
-                    break;
-                case 'Update Employee Manger':
-                    updateEmployeeManager();
-                    break;
-                case 'Exit':
-                    process.exit(1);
-            }
+}
+
+function selectionLogic({ selection }) {
+    switch (selection) {
+        case 'View All Departments':
+            return getDepartments();
+        case 'View All Roles':
+            return getRoles();
+        case 'View All Employees':
+            return getEmployees();
+        case 'Add a Department':
+            return addDepartment();
+        case 'Add a Role':
+            return addRole();
+        case 'Add an Employee':
+            return addEmployee();
+        case 'Update Employee Role':
+            return updateEmployeeRole();
+        case 'Update Employee Manger':
+            return updateEmployeeManager();
+        case 'Exit':
+            process.exit(1);
+    }
+}
+
+function Main() {
+    functionSelection()
+        .then(selection => {
+            return selectionLogic(selection);
+        })
+        .then(result => {
+            console.table(result);
         })
         .then( () => {
-            functionSelection();
+            Main();
         });
 }
 
-functionSelection();
+Main();
