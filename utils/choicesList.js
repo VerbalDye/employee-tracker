@@ -5,20 +5,19 @@ async function getChoices(table, column) {
     const roleOptions = [];
     rows.forEach((row, index) => {
         console.log(row);
-        roleOptions.push(index + 1 + '. ' + row[column]);
+        roleOptions.push(index + 1 + '. ' + row[column].toString());
     });
     return roleOptions;
 }
 
-async function validateChoice(table, column, response) {
+async function validateChoice(table, response, responseAttribute) {
     const [rows, fields] = await db.promise().query(`SELECT * FROM ` + table + ` ORDER BY ID`);
     rows.forEach((row, index) => {
-        if (index === parseInt(response[column].split('.')[0]) - 1) {
-            response[column] = row.id;
-            return response;
+        if (index === parseInt(response[responseAttribute].toString().split('.')[0]) - 1) {
+            response[responseAttribute] = row.id;
         }
     });
-    throw new Error;
+    return response;
 }
 
 module.exports = {
