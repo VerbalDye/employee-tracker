@@ -1,9 +1,9 @@
 // get required packages
 const inquirer = require('inquirer');
 // other methods added to seperate files to simplify file structure
-const { getDepartments, getEmployeesByDepartment, addDepartment, deleteDepartment, getDepartmentBudgets } = require('./lib/departments');
+const { getDepartments, addDepartment, deleteDepartment, getDepartmentBudgets } = require('./lib/departments');
 const { getRoles, addRole, deleteRole } = require('./lib/roles');
-const { getEmployees, addEmployee, deleteEmployee, updateEmployeeRole, updateEmployeeManager, getEmployeesByManager } = require('./lib/employees')
+const { getEmployees, addEmployee, deleteEmployee, updateEmployeeRole, updateEmployeeManager, getEmployeesByManager, getEmployeesByDepartment } = require('./lib/employees')
 
 // inquirer prompt to get the next action the user wants to perform
 function functionSelection() {
