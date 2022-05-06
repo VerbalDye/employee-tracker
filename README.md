@@ -34,7 +34,7 @@
   This project is not open to contribution.
 
   ## Walkthrough Video
-  [Click to view walkthrough]()
+  [Click to view walkthrough](https://drive.google.com/file/d/1Lhdhg6bsh45Wc4Dp0xhUDfbtridh2p7p/view)
 
   ## Questions?
   If you have any more questions for me, I can be reached from one of the links below. Thank you!
