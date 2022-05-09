@@ -71,6 +71,9 @@ function Main() {
 
             // then call the function to begin again
             Main();
+        })
+        .catch(err => {
+            console.log(err);
         });
 }
 
